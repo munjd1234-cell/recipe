@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} - RECIPE AV</title>
+    <style>
+        :root { --main-red: #ff0042; --bg-black: #0b0b0b; --card-bg: #1a1a1a; --text-gray: #aaa; }
+        body { background-color: var(--bg-black); color: white; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        
+        header { background: #000; padding: 10px 5%; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: var(--main-red); font-size: 22px; font-weight: 900; text-decoration: none; }
+
+        .main-wrapper { display: flex; flex-wrap: wrap; padding: 20px 5%; max-width: 1600px; margin: 0 auto; gap: 20px; }
+        
+        /* 왼쪽: 메인 영상 및 정보 */
+        .content-area { flex: 1; min-width: 300px; }
+        .video-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        .video-details { margin-top: 20px; padding-bottom: 20px; border-bottom: 1px solid #222; }
+        .video-title { font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+        .video-stats { color: var(--text-gray); font-size: 14px; display: flex; gap: 15px; }
+
+        /* 광고 배너 영역 */
+        .ad-banner { background: #1a1a1a; border: 1px solid #333; padding: 15px; margin: 20px 0; border-radius: 8px; text-align: center; color: var(--main-red); font-weight: bold; cursor: pointer; }
+
+        /* 오른쪽: 추천 리스트 */
+        .sidebar { width: 350px; }
+        .sidebar-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; border-left: 4px solid var(--main-red); padding-left: 10px; }
+        .side-card { display: flex; gap: 10px; margin-bottom: 15px; cursor: pointer; text-decoration: none; color: white; }
+        .side-thumb { width: 140px; aspect-ratio: 16/9; background-size: cover; border-radius: 4px; flex-shrink: 0; }
+        .side-info { font-size: 13px; font-weight: 500; line-height: 1.4; }
+
+        footer { background: #000; padding: 40px 5%; text-align: center; border-top: 1px solid #222; margin-top: 50px; color: #444; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="/" class="logo">RECIPE AV</a>
+    <div style="color: #555;">GLOBAL KITCHEN NETWORK</div>
+</header>
+
+<div class="main-wrapper">
+    <div class="content-area">
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/{{ page.youtube_id }}?autoplay=1&rel=0" allowfullscreen></iframe>
+        </div>
+        
+        <div class="video-details">
+            <div class="video-title">{{ page.title }}</div>
+            <div class="video-stats">
+                <span>👁️ {{ page.calories | default: "1,240" }} views</span>
+                <span>📅 Published: {{ page.date | date: "%Y-%m-%d" }}</span>
+                <span style="color: var(--main-red);">❤️ Like</span>
+            </div>
+        </div>
+
+        <div class="ad-banner" onclick="window.open('https://link.coupang.com/...')">
+            [AD] 이 요리에 사용된 고화질 주방 용품 보러가기 >
+        </div>
+
+        <div style="color: #888; font-size: 14px; line-height: 1.6;">
+            {{ content }}
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-title">관련 레시피 추천</div>
+        {% for post in site.posts limit:10 %}
+        <a href="{{ post.url }}" class="side-card">
+            <div class="side-thumb" style="background-image: url('{{ post.image }}');"></div>
+            <div class="side-info">{{ post.title }}</div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<footer>
+    <p>상호명: DHC Solution (디에이치씨솔루션) | 대표자: 문종대</p>
+    <p>© 2026 World Recipe AI. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
