@@ -2,38 +2,47 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>{{ page.title }} - RECIPE AV</title>
+    <title>{{ page.title }} - RECIPE</title>
     <style>
         body { background: #0b0b0b; color: white; font-family: sans-serif; margin: 0; }
         header { background: #000; padding: 15px 5%; border-bottom: 1px solid #222; }
-        .logo { color: #ff0042; font-size: 22px; font-weight: 900; text-decoration: none; }
+        .logo { color: #ff0042; font-size: 22px; font-weight: 900; text-decoration: none; cursor: pointer; }
         .main-content { display: flex; flex-wrap: wrap; padding: 20px 5%; gap: 20px; max-width: 1400px; margin: 0 auto; }
         .video-side { flex: 2; min-width: 300px; }
         .recommend-side { flex: 1; min-width: 250px; }
-        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; }
+        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden; }
         .video-box iframe { width: 100%; height: 100%; border: none; }
-        .ad-box { background: #1a1a1a; padding: 15px; margin: 20px 0; border: 1px solid #ff0042; color: #ff0042; text-align: center; font-weight: bold; cursor: pointer; }
-        .side-item { display: flex; gap: 10px; margin-bottom: 15px; text-decoration: none; color: white; font-size: 13px; }
-        .side-thumb { width: 120px; aspect-ratio: 16/9; background-size: cover; border-radius: 4px; flex-shrink: 0; }
+        .ad-box { background: #1a1a1a; padding: 15px; margin: 20px 0; border: 1px solid #ff0042; color: #ff0042; text-align: center; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        .side-item { display: flex; gap: 10px; margin-bottom: 15px; text-decoration: none; color: white; font-size: 13px; transition: 0.2s; }
+        .side-item:hover { opacity: 0.7; }
+        .side-thumb { width: 120px; aspect-ratio: 16/9; background-size: cover; background-position: center; border-radius: 4px; flex-shrink: 0; }
+        h1 { font-size: 24px; margin: 20px 0 10px; }
     </style>
 </head>
 <body>
-<header><a href="/" class="logo">RECIPE AV</a></header>
+<header>
+    <a href="{{ '/' | relative_url }}" class="logo">RECIPE KITCHEN</a>
+</header>
+
 <div class="main-content">
     <div class="video-side">
         <div class="video-box">
             <iframe src="https://www.youtube.com/embed/{{ page.youtube_id }}?autoplay=1" allowfullscreen></iframe>
         </div>
         <h1>{{ page.title }}</h1>
-        <div class="ad-box">[AD] 이 레시피에 사용된 주방도구 최저가 확인하기 ></div>
+        <div class="ad-box" onclick="window.open('https://link.coupang.com/...')">[AD] 이 요리에 최적화된 조리도구 세트 보기 ></div>
         <div style="color: #888; line-height: 1.6;">{{ content }}</div>
     </div>
+    
     <div class="recommend-side">
-        <h3 style="border-left: 4px solid #ff0042; padding-left: 10px;">추천 레시피</h3>
+        <h3 style="border-left: 4px solid #ff0042; padding-left: 10px; margin-bottom: 20px;">추천 레시피</h3>
         {% for post in site.posts limit:10 %}
-        <a href="{{ post.url }}" class="side-item">
+        <a href="{{ post.url | relative_url }}" class="side-item">
             <div class="side-thumb" style="background-image: url('{{ post.image }}');"></div>
-            <div>{{ post.title }}</div>
+            <div>
+                <div style="font-weight: bold; margin-bottom: 5px;">{{ post.title }}</div>
+                <div style="color: #666; font-size: 11px;">{{ post.calories | default: "350 kcal" }}</div>
+            </div>
         </a>
         {% endfor %}
     </div>
