@@ -1,35 +1,80 @@
 ---
-layout: default
-title: "World Recipe AI - Global Cooking Guide"
+layout: null
 ---
-
-<div class="recipe-home">
-  <h1 style="text-align: center; margin-bottom: 40px;">🌍 World Recipe AI</h1>
-  <p style="text-align: center; color: #666;">AI가 큐레이션한 전 세계 모든 요리 레시피를 만나보세요.</p>
-
-  <div class="recipe-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px;">
-    
-    {% for post in site.posts %}
-    <div class="recipe-card" style="border: 1px solid #eee; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.3s;">
-      <a href="{{ post.url | relative_url }}" style="text-decoration: none; color: inherit;">
-        <div style="height: 200px; background-image: url('{{ post.image }}'); background-size: cover; background-position: center;"></div>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Recipe AI - Global Video Kitchen</title>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <style>
+        :root { --main-red: #ff0042; --bg-black: #0b0b0b; --card-bg: #1a1a1a; }
+        body { background-color: var(--bg-black); color: white; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        header { background: #000; padding: 15px 5%; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .logo { color: var(--main-red); font-size: 24px; font-weight: 900; text-decoration: none; }
         
-        <div style="padding: 15px;">
-          <span style="font-size: 12px; color: #ff5722; font-weight: bold; text-transform: uppercase;">{{ post.lang }}</span>
-          <h3 style="margin: 10px 0; font-size: 18px;">{{ post.title }}</h3>
-          <p style="font-size: 14px; color: #777;">{{ post.description | truncate: 80 }}</p>
-          <div style="margin-top: 10px; font-size: 13px; color: #999;">
-             🕒 {{ post.prep_time | replace: 'PT', '' | replace: 'M', ' min' }} | 🔥 {{ post.calories }}
-          </div>
-        </div>
-      </a>
-    </div>
-    {% endfor %}
+        .container { padding: 20px 5%; }
+        .section-header { display: flex; align-items: center; margin: 30px 0 15px; border-left: 4px solid var(--main-red); padding-left: 10px; font-size: 20px; font-weight: bold; }
+        
+        /* 그리드 시스템 */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; }
+        
+        .video-card { background: var(--card-bg); border-radius: 4px; overflow: hidden; transition: 0.2s; cursor: pointer; position: relative; }
+        .video-card:hover { transform: scale(1.05); z-index: 10; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        
+        /* 썸네일 및 유튜브 영역 */
+        .thumb-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
+        .main-thumb { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; z-index: 5; transition: opacity 0.3s; }
+        .video-card:hover .main-thumb { opacity: 0; }
+        .yt-preview { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        
+        .video-info { padding: 10px; }
+        .video-title { font-size: 13px; font-weight: 500; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.4; }
+        .video-meta { font-size: 11px; color: #888; margin-top: 5px; display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body>
 
-  </div>
+<header>
+    <a href="#" class="logo">RECIPE AI</a>
+    <div style="color: #888; font-size: 14px;">전 세계 {{ site.posts.size }}개의 레시피</div>
+</header>
+
+<div class="container">
+    <div class="section-header">실시간 인기 레시피 (Most Popular)</div>
+    <div class="video-grid">
+        {% for post in site.posts %}
+        <div class="video-card" onmouseenter="playYT('{{ forloop.index }}')" onmouseleave="stopYT('{{ forloop.index }}')" onclick="location.href='{{ post.url | relative_url }}'">
+            <div class="thumb-container">
+                <div id="thumb-{{ forloop.index }}" class="main-thumb" style="background-image: url('{{ post.image }}');"></div>
+                <div id="player-{{ forloop.index }}" class="yt-preview" data-id="{{ post.youtube_id }}"></div>
+            </div>
+            <div class="video-info">
+                <div class="video-title">{{ post.title }}</div>
+                <div class="video-meta">
+                    <span>🔥 {{ post.calories }}</span>
+                    <span>🕒 {{ post.prep_time | replace: 'PT', '' | replace: 'M', '분' }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
-<style>
-  .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-  body { font-family: 'Noto Sans KR', sans-serif; background-color: #fafafa; }
-</style>
+<script>
+    var players = {};
+    function onYouTubeIframeAPIReady() {
+        document.querySelectorAll('.yt-preview').forEach(function(el, index) {
+            var idx = index + 1;
+            players[idx] = new YT.Player(el.id, {
+                videoId: el.getAttribute('data-id'),
+                playerVars: { 'autoplay': 0, 'controls': 0, 'mute': 1, 'loop': 1, 'playlist': el.getAttribute('data-id') }
+            });
+        });
+    }
+    function playYT(id) { if(players[id]) players[id].playVideo(); }
+    function stopYT(id) { if(players[id]) { players[id].stopVideo(); document.getElementById('thumb-'+id).style.opacity = 1; } }
+</script>
+</body>
+</html>
