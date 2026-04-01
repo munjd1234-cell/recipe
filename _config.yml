@@ -1,18 +1,19 @@
-title: "World Recipe AI"
-description: "AI가 생성한 전 세계 모든 요리 레시피"
-theme: jekyll-theme-minimal
-remote_theme: pages-themes/minimal
+title: "RECIPE AI"
+description: "Global Video Kitchen"
+theme: jekyll-theme-minimal # 기본 테마를 명시해줘야 빌드 오류가 안 납니다.
 
-# 아래 내용을 반드시 추가해야 레시피 목록이 보입니다!
-defaults:
-  - scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: "post"
-
-# 레시피 파일들을 읽어오기 위한 설정
+# 포스트(레시피) 데이터를 사이트에서 읽을 수 있게 강제 설정
 collections:
   posts:
     output: true
     permalink: /:year/:month/:day/:title/
+
+# 빌드 시 제외할 폴더 (오류 방지)
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
