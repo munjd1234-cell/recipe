@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>World Recipe AI</title>
+    <script>
+        // 사용자의 브라우저 언어를 확인합니다.
+        var lang = navigator.language || navigator.userLanguage;
+        // 한국어면 /ko/로, 아니면 영어인 /en/ 폴더로 보냅니다.
+        if (lang.indexOf('ko') > -1) {
+            window.location.href = './ko/bibimbap.html'; // 아까 만든 파일명으로 연결
+        } else {
+            window.location.href = './en/bibimbap.html';
+        }
+    </script>
+</head>
+<body>
+    <p>Redirecting to your language...</p>
+</body>
+</html>
