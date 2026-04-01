@@ -1,0 +1,4 @@
+title: "World Recipe AI"
+description: "AI가 생성한 전 세계 모든 요리 레시피"
+theme: jekyll-theme-minimal  # 구글이 추천하는 가장 깔끔하고 기본이 되는 테마입니다.
+remote_theme: pages-themes/minimal
