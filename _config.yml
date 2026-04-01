@@ -1,4 +1,18 @@
 title: "World Recipe AI"
 description: "AI가 생성한 전 세계 모든 요리 레시피"
-theme: jekyll-theme-minimal  # 구글이 추천하는 가장 깔끔하고 기본이 되는 테마입니다.
+theme: jekyll-theme-minimal
 remote_theme: pages-themes/minimal
+
+# 아래 내용을 반드시 추가해야 레시피 목록이 보입니다!
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+
+# 레시피 파일들을 읽어오기 위한 설정
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title/
