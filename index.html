@@ -1,19 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>World Recipe AI</title>
-    <script>
-        // 사용자의 브라우저 언어를 확인합니다.
-        var lang = navigator.language || navigator.userLanguage;
-        // 한국어면 /ko/로, 아니면 영어인 /en/ 폴더로 보냅니다.
-        if (lang.indexOf('ko') > -1) {
-            window.location.href = './ko/bibimbap.html'; // 아까 만든 파일명으로 연결
-        } else {
-            window.location.href = './en/bibimbap.html';
-        }
-    </script>
-</head>
-<body>
-    <p>Redirecting to your language...</p>
-</body>
-</html>
+---
+layout: default
+title: "World Recipe AI - Global Cooking Guide"
+---
+
+<div class="recipe-home">
+  <h1 style="text-align: center; margin-bottom: 40px;">🌍 World Recipe AI</h1>
+  <p style="text-align: center; color: #666;">AI가 큐레이션한 전 세계 모든 요리 레시피를 만나보세요.</p>
+
+  <div class="recipe-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px;">
+    
+    {% for post in site.posts %}
+    <div class="recipe-card" style="border: 1px solid #eee; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.3s;">
+      <a href="{{ post.url | relative_url }}" style="text-decoration: none; color: inherit;">
+        <div style="height: 200px; background-image: url('{{ post.image }}'); background-size: cover; background-position: center;"></div>
+        
+        <div style="padding: 15px;">
+          <span style="font-size: 12px; color: #ff5722; font-weight: bold; text-transform: uppercase;">{{ post.lang }}</span>
+          <h3 style="margin: 10px 0; font-size: 18px;">{{ post.title }}</h3>
+          <p style="font-size: 14px; color: #777;">{{ post.description | truncate: 80 }}</p>
+          <div style="margin-top: 10px; font-size: 13px; color: #999;">
+             🕒 {{ post.prep_time | replace: 'PT', '' | replace: 'M', ' min' }} | 🔥 {{ post.calories }}
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+<style>
+  .recipe-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+  body { font-family: 'Noto Sans KR', sans-serif; background-color: #fafafa; }
+</style>
